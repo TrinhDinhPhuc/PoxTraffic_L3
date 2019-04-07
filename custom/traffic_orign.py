@@ -65,7 +65,7 @@ def main(argv):
     interface = "nat0-eth0"
     # pkts = sniff(iface="nat0-eth0")
     # print("pkts :",pkts)
-    for i in xrange(10):
+    for i in xrange(2000):
         randd = random.random()
         srcip = generateSourceIP ()
         dstip = generateDestinationIP (start, end)
