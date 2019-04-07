@@ -61,7 +61,6 @@ def main(argv):
         udp = UDP(dport = 80, sport = 2)
         tcp = TCP(dport = 80, sport = 2)
         packets = Ether() / IP(dst = generateDestinationIP (start, end), src = generateSourceIP ()) / tcp
-
         print(repr(packets))
 
 	    #rstrip() strips whitespace characters from the end of interface

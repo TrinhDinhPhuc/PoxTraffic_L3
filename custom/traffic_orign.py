@@ -8,6 +8,8 @@ from scapy.all import sendp, IP, UDP, Ether, TCP, ICMP
 from random import randrange
 import random
 from py_essentials import simpleRandom
+from scapy.all import sniff
+
 import socket
 def generateSourceIP():
     #not valid for first octet of IP address
@@ -61,31 +63,35 @@ def main(argv):
     # print("interface: {0}, rstrip: {1}".format(interface,interface.rstrip()))
     table={num:name[8:] for name,num in vars(socket).items() if name.startswith("IPPROTO")}
     interface = "nat0-eth0"
-    for i in xrange(100):
+    # pkts = sniff(iface="nat0-eth0")
+    # print("pkts :",pkts)
+    for i in xrange(10):
         randd = random.random()
         srcip = generateSourceIP ()
         dstip = generateDestinationIP (start, end)
+        # for pkt in pkts:
+        #   print("pkt= ",pkt.time)
         if randd >= 0.5: 
             packets = Ether() / IP(dst = dstip, src =srcip) / TCP(dport = 80, sport = 20) / str(simpleRandom.randomString(random.randint(0,1300)))
             # print(table[packets.proto],packets.src,packets.dst)
             print((repr(packets)[:81]))
-            sendp(packets, iface = interface.rstrip(), inter = 0.1,count=random.randint(1,3))
-            packets1 = Ether() / IP(dst =  srcip , src =dstip)/ TCP(dport = 80, sport = 20) / str(simpleRandom.randomString(random.randint(0,1300)))
-            print((repr(packets1)[:81]))
-            sendp(packets1, iface = interface.rstrip(), inter = 0.1,count=random.randint(1,3))
+            sendp(packets, iface = interface.rstrip(), inter = 0.1,count=1)
+            # packets1 = Ether() / IP(dst =  srcip , src =dstip)/ TCP(dport = 80, sport = 20) / str(simpleRandom.randomString(random.randint(0,1300)))
+            # print((repr(packets1)[:81]))
+            # sendp(packets1, iface = interface.rstrip(), inter = 0.1,count=random.randint(1,3))
         elif randd < 0.5 and randd >0.3:
             packets = Ether() / IP(dst = dstip, src =srcip) / UDP(dport = 80, sport = 20) / str(simpleRandom.randomString(random.randint(0,1000)))
             print((repr(packets)[:81]))
-            sendp(packets, iface = interface.rstrip(), inter = 0.1,count=random.randint(1,3))
-            packets1 = Ether() / IP(dst =  srcip , src =dstip)/ UDP(dport = 80, sport = 20) / str(simpleRandom.randomString(random.randint(0,900)))
-            print((repr(packets1)[:81]))
-            sendp(packets1, iface = interface.rstrip(), inter = 0.1,count=random.randint(1,3))
+            sendp(packets, iface = interface.rstrip(), inter = 0.1,count=1)
+            # packets1 = Ether() / IP(dst =  srcip , src =dstip)/ UDP(dport = 80, sport = 20) / str(simpleRandom.randomString(random.randint(0,900)))
+            # print((repr(packets1)[:81]))
+            # sendp(packets1, iface = interface.rstrip(), inter = 0.1,count=random.randint(1,3))
         else:
             packets = Ether() / IP(dst = dstip, src =srcip) / ICMP() / str(simpleRandom.randomString(random.randint(0,700)))
             print((repr(packets)[:81]))
-            sendp(packets, iface = interface.rstrip(), inter = 0.1,count=random.randint(1,3))
-            packets1 = Ether() / IP(dst =  srcip , src =dstip)/ ICMP() / str(simpleRandom.randomString(random.randint(0,600)))
-            print((repr(packets1)[:81]))
-            sendp(packets1, iface = interface.rstrip(), inter = 0.1,count=random.randint(1,3))
+            sendp(packets, iface = interface.rstrip(), inter = 0.1,count=1)
+            # packets1 = Ether() / IP(dst =  srcip , src =dstip)/ ICMP() / str(simpleRandom.randomString(random.randint(0,600)))
+            # print((repr(packets1)[:81]))
+            # sendp(packets1, iface = interface.rstrip(), inter = 0.1,count=random.randint(1,3))
 if __name__ == '__main__':
   main(sys.argv)
