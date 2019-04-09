@@ -26,11 +26,11 @@ def forNow(dict):
 def save_log_file(dict,file_name):
 	for key,value in dict.iteritems():
 		if "time" not in str(value):
-			with open(file_name,'a') as the_file: 
+			with open("host_"+str(file_name),'a') as the_file: 
 				the_file.write(str(str(value['duration'])+ "\t"+str(value['proto'])+ "\t"+str(value['src_bytes'])+ "\t"+str(value['dst_bytes'])+ "\t"+str(value['src_count'])+ "\t"+str(value['dst_count'])+"\n"))
 		else:
-			with open("error_"+str(file_name),'a') as the_file: 
-				the_file.write(str(str(value['time'])+ "\t"+str(value['proto'])+ "\t"+str(value['len'])+ "\t"+str(0)+ "\t"+str(random.randint(0,16))+ "\t"+str(random.randint(0,14))+"\n"))
+			with open("host_error_"+str(file_name),'a') as the_file: 
+				the_file.write(str(str(value['time'])+ "\t"+str(value['proto'])+ "\t"+str(value['len'])+ "\t"+str(0)+ "\t"+str(random.randint(0,6))+ "\t"+str(random.randint(0,4))+"\n"))
 
 def checkKey(dict,key,value,_list_2_sec):
 	try:
@@ -77,7 +77,7 @@ def custom_action(packet):
 		list_2_sec = forNow(time_log)
 		_dict = {"src_ip":packet[IP].src,"dst_ip":packet[IP].dst,"proto":table[packet[IP].proto],"len":packet[IP].len,"time":time.time()}
 		checkKey(log_file,packet[IP].src,_dict,list_2_sec)
-		if len(log_file) % 1000 == 0 and len(log_file) != 0:
+		if len(log_file) % 500 == 0 and len(log_file) != None:
 			count+=1
 			save_log_file(log_file,file_name= "save_file_"+str(count)+".txt")
 			print("Save batch file: ",count)
@@ -89,4 +89,4 @@ def custom_action(packet):
 	# 	print("time up!")
 	# 	os._exit(0)
 	# 	print(logging.error(traceback.format_exc()))
-print(sniff(iface="nat0-eth0",prn= custom_action, store=0 ))
+print(sniff(iface="s9-eth8",prn= custom_action, store=0 ))

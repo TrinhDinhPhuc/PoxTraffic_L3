@@ -3,6 +3,7 @@ from scapy.all import IP
 import socket
 import time
 import pandas as pd
+from scapy.all import sendp, IP, UDP, Ether, TCP, ICMP
 
 table={num:name[8:] for name,num in vars(socket).items() if name.startswith("IPPROTO")}
 count_packets_in_return = 0
