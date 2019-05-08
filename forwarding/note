@@ -1,1 +1,0 @@
-sudo fuser -k 6633/tcp #kill port 6633
